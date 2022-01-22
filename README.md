@@ -16,7 +16,7 @@
     <dependency>
         <groupId>dev.lightdream</groupId>
         <artifactId>FileManager</artifactId>
-        <version>VERSION</version>
+        <version>LATEST</version>
     </dependency>
     <!-- Other dependencies -->
 </dependencies>
