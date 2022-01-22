@@ -1,4 +1,5 @@
 # LightDream FileManager
+![Build](https://github.com/L1ghtDream/FileManager/actions/workflows/build.yml/badge.svg)
 
 ```xml
 <repositories>
