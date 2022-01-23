@@ -7,6 +7,11 @@
       <option name="url" value="https://repo.maven.apache.org/maven2" />
     </remote-repository>
     <remote-repository>
+      <option name="id" value="snake-yml" />
+      <option name="name" value="snake-yml" />
+      <option name="url" value="https://mvnrepository.com/artifact/org.yaml/snakeyaml" />
+    </remote-repository>
+    <remote-repository>
       <option name="id" value="lightdream-repo" />
       <option name="name" value="lightdream-repo" />
       <option name="url" value="https://repo.lightdream.dev/repository/LightDream-API/" />
