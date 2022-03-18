@@ -11,18 +11,31 @@ public class FileManager {
 
     private final static String extension = ".json";
     private final FileManagerMain main;
-    private final Gson gson;
+    private Gson gson;
+    private GsonBuilder gsonBuilder;
 
     public FileManager(FileManagerMain main) {
         this.main = main;
-        this.gson = new GsonBuilder()
-                .setPrettyPrinting()
-                .create();
+        this.gsonBuilder = new GsonBuilder()
+                .setPrettyPrinting();
+        reload();
     }
 
-    public FileManager(FileManagerMain main, Gson gson) {
+    public FileManager(FileManagerMain main, GsonBuilder gsonBuilder) {
         this.main = main;
-        this.gson = gson;
+        this.gsonBuilder = gsonBuilder;
+    }
+
+    public void reload() {
+        this.gson = gsonBuilder.create();
+    }
+
+    public GsonBuilder getGsonBuilder() {
+        return gsonBuilder;
+    }
+
+    public void setGsonBuilder(GsonBuilder gsonBuilder) {
+        this.gsonBuilder = gsonBuilder;
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
