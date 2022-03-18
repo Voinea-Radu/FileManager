@@ -7,11 +7,19 @@ import java.io.File;
 
 public interface FileManagerMain {
 
-    @SuppressWarnings("unused")
-    static String getVersion() {
-        return "FileManager " + FileManagerMain.class.getPackage().getImplementationVersion() +
-                "    -> " + LoggableMain.getVersion() +
-                "    -> " + LambdaExecutor.getVersion();
+    @SuppressWarnings({"unused", "StringConcatenationInLoop"})
+    static String getVersion(int tabs) {
+        String output = "FileManager 2.0.7\n";
+        String prepend = "";
+
+        for (int i = 0; i < tabs; i++) {
+            prepend += "    ";
+        }
+
+        output += prepend + "    -> " + LoggableMain.getVersion() + "\n";
+        output += prepend + "    -> " + LambdaExecutor.getVersion() + "\n";
+
+        return output;
     }
 
     File getDataFolder();
