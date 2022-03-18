@@ -4,10 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lightdream.lambda.LambdaExecutor;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.FileReader;
-import java.io.FileWriter;
+import java.io.*;
 
 @SuppressWarnings("unused")
 public class FileManager {
@@ -28,10 +25,14 @@ public class FileManager {
         this.gson = gson;
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save(Object object) {
         LambdaExecutor.LambdaCatch.NoReturnLambdaCatch.executeCatch(() -> {
             String json = gson.toJson(object);
             String path = main.getDataFolder() + "/" + object.getClass().getSimpleName().toLowerCase() + extension;
+
+            //Create folders
+            new File(path).getParentFile().mkdirs();
 
             BufferedWriter writer = new BufferedWriter(new FileWriter(path));
             writer.write(json);
@@ -40,10 +41,14 @@ public class FileManager {
         });
     }
 
+    @SuppressWarnings("ResultOfMethodCallIgnored")
     public <T> T load(Class<T> clazz) {
         return LambdaExecutor.LambdaCatch.ReturnLambdaCatch.executeCatch(() -> {
             String json = "";
             String path = main.getDataFolder() + "/" + clazz.getSimpleName().toLowerCase() + extension;
+
+            //Create folers
+            new File(path).getParentFile().mkdirs();
 
             BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
 
