@@ -26,7 +26,7 @@ public class FileManager {
         this.gsonBuilder = gsonBuilder;
     }
 
-    public void reload() {
+    private void reload() {
         this.gson = gsonBuilder.create();
     }
 
@@ -36,6 +36,7 @@ public class FileManager {
 
     public void setGsonBuilder(GsonBuilder gsonBuilder) {
         this.gsonBuilder = gsonBuilder;
+        reload();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
