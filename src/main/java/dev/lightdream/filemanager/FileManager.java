@@ -39,11 +39,15 @@ public class FileManager {
         reload();
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save(Object object) {
+        save(object, object.getClass().getSimpleName().toLowerCase());
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public void save(Object object, String name) {
         LambdaExecutor.LambdaCatch.NoReturnLambdaCatch.executeCatch(() -> {
             String json = gson.toJson(object);
-            String path = main.getDataFolder() + "/" + object.getClass().getSimpleName().toLowerCase() + extension;
+            String path = main.getDataFolder() + "/" + name + extension;
 
             //Create folders
             new File(path).getParentFile().mkdirs();
@@ -55,11 +59,15 @@ public class FileManager {
         });
     }
 
-    @SuppressWarnings("ResultOfMethodCallIgnored")
     public <T> T load(Class<T> clazz) {
+        return load(clazz, clazz.getSimpleName().toLowerCase());
+    }
+
+    @SuppressWarnings("ResultOfMethodCallIgnored")
+    public <T> T load(Class<T> clazz, String name) {
         return LambdaExecutor.LambdaCatch.ReturnLambdaCatch.executeCatch(() -> {
             String json = "";
-            String path = main.getDataFolder() + "/" + clazz.getSimpleName().toLowerCase() + extension;
+            String path = main.getDataFolder() + "/" + name + extension;
 
             //Create folers
             new File(path).getParentFile().mkdirs();
