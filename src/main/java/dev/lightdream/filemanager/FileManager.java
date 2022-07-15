@@ -3,6 +3,7 @@ package dev.lightdream.filemanager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lightdream.lambda.LambdaExecutor;
+import dev.lightdream.logger.Debugger;
 
 import java.io.*;
 
@@ -69,7 +70,7 @@ public class FileManager {
             String json = "";
             String path = main.getDataFolder() + "/" + name + extension;
 
-            //Create folers
+            //Create folders
             new File(path).getParentFile().mkdirs();
 
             BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
@@ -82,6 +83,8 @@ public class FileManager {
 
             return gson.fromJson(json, clazz);
         }, e -> {
+            Debugger.log("Could not load " + clazz.getSimpleName() + ". Error: ");
+            e.printStackTrace();
             T obj = LambdaExecutor.LambdaCatch.ReturnLambdaCatch.executeCatch(clazz::newInstance);
             save(obj);
             return obj;
