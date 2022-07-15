@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lightdream.lambda.LambdaExecutor;
 import dev.lightdream.logger.Debugger;
+import dev.lightdream.logger.Logger;
 
 import java.io.*;
 
@@ -83,8 +84,10 @@ public class FileManager {
 
             return gson.fromJson(json, clazz);
         }, e -> {
-            Debugger.log("Could not load " + clazz.getSimpleName() + ". Error: ");
-            e.printStackTrace();
+            Logger.warn("Could not load " + clazz.getSimpleName() + ". Creating and saving new instance.");
+            if(Debugger.isEnabled()){
+                e.printStackTrace();
+            }
             T obj = LambdaExecutor.LambdaCatch.ReturnLambdaCatch.executeCatch(clazz::newInstance);
             save(obj);
             return obj;
