@@ -2,9 +2,9 @@ package dev.lightdream.filemanager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.lightdream.lambda.LambdaExecutor;
 import dev.lightdream.logger.Debugger;
 import dev.lightdream.logger.Logger;
+import lombok.SneakyThrows;
 
 import java.io.*;
 
@@ -45,29 +45,29 @@ public class FileManager {
         save(object, object.getClass().getSimpleName().toLowerCase());
     }
 
+    @SneakyThrows
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save(Object object, String name) {
-        LambdaExecutor.LambdaCatch.NoReturnLambdaCatch.executeCatch(() -> {
-            String json = gson.toJson(object);
-            String path = main.getDataFolder() + "/" + name + extension;
+        String json = gson.toJson(object);
+        String path = main.getDataFolder() + "/" + name + extension;
 
-            //Create folders
-            new File(path).getParentFile().mkdirs();
+        //Create folders
+        new File(path).getParentFile().mkdirs();
 
-            BufferedWriter writer = new BufferedWriter(new FileWriter(path));
-            writer.write(json);
+        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        writer.write(json);
 
-            writer.close();
-        });
+        writer.close();
     }
 
     public <T> T load(Class<T> clazz) {
         return load(clazz, clazz.getSimpleName().toLowerCase());
     }
 
+    @SneakyThrows
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public <T> T load(Class<T> clazz, String name) {
-        return LambdaExecutor.LambdaCatch.ReturnLambdaCatch.executeCatch(() -> {
+        try {
             String json = "";
             String path = main.getDataFolder() + "/" + name + extension;
 
@@ -83,15 +83,15 @@ public class FileManager {
             bufferedReader.close();
 
             return gson.fromJson(json, clazz);
-        }, e -> {
+        } catch (Exception e) {
             Logger.warn("Could not load " + clazz.getSimpleName() + ". Creating and saving new instance.");
-            if(Debugger.isEnabled()){
+            if (Debugger.isLowLevelDebuggingEnabled()) {
                 e.printStackTrace();
             }
-            T obj = LambdaExecutor.LambdaCatch.ReturnLambdaCatch.executeCatch(clazz::newInstance);
+            T obj = clazz.newInstance();
             save(obj);
             return obj;
-        });
+        }
     }
 
 
