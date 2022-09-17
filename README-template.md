@@ -1,5 +1,5 @@
 # LightDream FileManager
-![Build](/actions/workflows/build.yml/badge.svg)
+![Build](../../actions/workflows/build.yml/badge.svg)
 
 ```xml
 <repositories>
