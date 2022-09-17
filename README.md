@@ -1,5 +1,5 @@
 # LightDream FileManager
-![Build](https://github.com/L1ghtDream/FileManager/actions/workflows/build.yml/badge.svg)
+![Build](/actions/workflows/build.yml/badge.svg)
 
 ```xml
 <repositories>
@@ -22,28 +22,5 @@
 </dependencies>
 ```
 
-## Creating a DatabaseManager Implementation
-
-
-## Example Main
-```java
-public class Example implements FileManagerMain {
-
-    private FileManager fileManager;
-
-    public Example() {
-        enable();
-    }
-
-    public void enable() {
-        this.fileManager = new FileManager(this, FileManager.PersistType.YAML);
-    }
-
-    @Override
-    File getDataFolder(){
-        return new File("path/to/your/working/directory");
-    }
-}
-```
-
-
+## Example classes
+Can be found in the [source code](/src/main/java/dev/lightdream/${{ env.PACKAGE }}/example)
