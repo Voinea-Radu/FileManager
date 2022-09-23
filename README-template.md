@@ -14,7 +14,7 @@ A library that allows you to map java objects to json and read them back from di
 <repositories>
     <repository>
         <id>lightdream-repo</id>
-        <url>https://repo.lightdream.dev/repository/LightDream-API/</url>
+        <url>https://repo.lightdream.dev/</url>
     </repository>
     <!-- Other repositories -->
 </repositories>
@@ -36,7 +36,7 @@ A library that allows you to map java objects to json and read them back from di
 
 ```groovy
 repositories {
-    maven { url "https://repo.lightdream.dev/repository/LightDream-API/" }
+    maven { url "https://repo.lightdream.dev/" }
 
     // Other repositories
 }
