@@ -1,7 +1,7 @@
 # FileManager
 
 ![Build](../../actions/workflows/build.yml/badge.svg)
-![Version](https://img.shields.io/badge/Version-2.2.1-red.svg)
+![Version](https://img.shields.io/badge/Version-2.2.2-red.svg)
 
 A library that allows you to map java objects to json and read them back from disk back into a java object.
 
@@ -26,7 +26,7 @@ A library that allows you to map java objects to json and read them back from di
     <dependency>
         <groupId>dev.lightdream</groupId>
         <artifactId>FileManager</artifactId>
-        <version>2.2.1</version>
+        <version>2.2.2</version>
     </dependency>
     <!-- Other dependencies -->
 </dependencies>
@@ -42,7 +42,7 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.lightdream:FileManager:2.2.1"
+    implementation "dev.lightdream:FileManager:2.2.2"
 
     // Other dependencies
 }
