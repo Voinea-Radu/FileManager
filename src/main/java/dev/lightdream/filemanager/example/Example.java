@@ -5,6 +5,7 @@ import dev.lightdream.filemanager.FileManagerMain;
 
 import java.io.File;
 
+@SuppressWarnings({"unused", "FieldCanBeLocal"})
 public class Example implements FileManagerMain {
     private FileManager fileManager;
     private Object object;
@@ -27,7 +28,7 @@ public class Example implements FileManagerMain {
         return new File(System.getProperty("user.dir"));
     }
 
-    public class Object {
+    public static class Object {
         public String name = "Example";
     }
 }

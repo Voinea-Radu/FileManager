@@ -68,7 +68,7 @@ public class FileManager {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public <T> T load(Class<T> clazz, String name) {
         try {
-            String json = "";
+            StringBuilder json = new StringBuilder();
             String path = main.getDataFolder() + "/" + name + extension;
 
             //Create folders
@@ -78,11 +78,11 @@ public class FileManager {
 
             String curLine;
             while ((curLine = bufferedReader.readLine()) != null) {
-                json += curLine + "\n";
+                json.append(curLine).append("\n");
             }
             bufferedReader.close();
 
-            return gson.fromJson(json, clazz);
+            return gson.fromJson(json.toString(), clazz);
         } catch (Exception e) {
             Logger.warn("Could not load " + clazz.getSimpleName() + ". Creating and saving new instance.");
             if (Debugger.isLowLevelDebuggingEnabled()) {
