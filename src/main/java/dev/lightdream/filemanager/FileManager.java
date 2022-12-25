@@ -2,7 +2,6 @@ package dev.lightdream.filemanager;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import dev.lightdream.logger.Debugger;
 import dev.lightdream.logger.Logger;
 import lombok.SneakyThrows;
 
@@ -85,7 +84,7 @@ public class FileManager {
             return gson.fromJson(json.toString(), clazz);
         } catch (Exception e) {
             Logger.warn("Could not load " + clazz.getSimpleName() + ". Creating and saving new instance.");
-            if (Debugger.isLowLevelDebuggingEnabled()) {
+            if (Logger.main.debugToConsole()) {
                 e.printStackTrace();
             }
             T obj = clazz.newInstance();
