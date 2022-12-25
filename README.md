@@ -1,38 +1,35 @@
-# FileManager
+# Logger
 
-![Build](../../actions/workflows/build.yml/badge.svg)
-![Version](https://img.shields.io/badge/Version-2.2.2-red.svg)
-
-A library that allows you to map java objects to json and read them back from disk back into a java object.
+[![Build](../../actions/workflows/build.yml/badge.svg)](../../actions)
+[![Version](https://img.shields.io/badge/Version-2.3.0-red.svg)](https://gitlab.com/lightdream-dev/api/-/packages)
 
 ## Use
 
-### Maven
+<details>
+  <summary>Maven</summary>
 
 ```xml
-
 <repositories>
     <repository>
-        <id>lightdream-repo</id>
+        <id>lightdream</id>
         <url>https://repo.lightdream.dev/</url>
     </repository>
     <!-- Other repositories -->
 </repositories>
-```
-
-```xml
 
 <dependencies>
     <dependency>
         <groupId>dev.lightdream</groupId>
         <artifactId>FileManager</artifactId>
-        <version>2.2.2</version>
+        <version>2.3.0</version>
     </dependency>
     <!-- Other dependencies -->
 </dependencies>
 ```
+</details>
 
-### Gradle
+<details>
+  <summary>Gradle</summary>
 
 ```groovy
 repositories {
@@ -42,12 +39,9 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.lightdream:FileManager:2.2.2"
+    implementation "dev.lightdream:FileManager:2.3.0"
 
     // Other dependencies
 }
 ```
-
-## Example
-
-Can be found in the [source code](/src/main/java/dev/lightdream/filemanager/example)
+</details>
