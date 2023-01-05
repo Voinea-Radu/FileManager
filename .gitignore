@@ -1,4 +1,9 @@
-/.idea/
-/target/
-dependency-reduced-pom.xml
+### IntelliJ IDEA ###
+.idea
+*.iws
 *.iml
+*.ipr
+
+### Gradle ###
+.gradle/
+build/
