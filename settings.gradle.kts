@@ -1,1 +1,1 @@
-rootProject.name = "redis-manager"
+rootProject.name = "file-manager"
