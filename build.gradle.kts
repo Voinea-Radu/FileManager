@@ -22,8 +22,8 @@ java {
 
 dependencies {
     // LightDream
-    implementation("dev.lightdream:logger:+")
-    implementation("dev.lightdream:lambda:+")
+    implementation("dev.lightdream:logger:3.1.0")
+    implementation("dev.lightdream:lambda:3.8.0")
 
     // Google
     implementation("com.google.code.gson:gson:2.10")
