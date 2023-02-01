@@ -89,7 +89,7 @@ public class FileManager {
                 e.printStackTrace();
             }
             T obj = clazz.getDeclaredConstructor().newInstance();
-            save(obj);
+            save(obj, name);
             return obj;
         }
     }
