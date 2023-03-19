@@ -11,6 +11,8 @@ import java.io.*;
 @SuppressWarnings("unused")
 public class FileManager {
 
+    private static FileManager staticInstance;
+
     private final File dataFolder;
 
     private @Setter String extension = ".json";
@@ -36,6 +38,20 @@ public class FileManager {
 
     public FileManager(FileManagerMain main, GsonBuilder gsonBuilder) {
         this(main.getDataFolder(), gsonBuilder);
+    }
+
+    /**
+     * @return The static instance of the FileManager or null if {@link #setStatic()} was not called
+     */
+    public static FileManager get() {
+        return FileManager.staticInstance;
+    }
+
+    /**
+     * Sets the static instance of the FileManager
+     */
+    public void setStatic() {
+        FileManager.staticInstance = this;
     }
 
     public void enableDebugging() {
