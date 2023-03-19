@@ -3,6 +3,7 @@ package dev.lightdream.filemanager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lightdream.logger.Logger;
+import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.io.*;
@@ -10,26 +11,35 @@ import java.io.*;
 @SuppressWarnings("unused")
 public class FileManager {
 
-    private final static String extension = ".json";
-    private final FileManagerMain main;
+    private final File dataFolder;
+
+    private @Setter String extension = ".json";
     private Gson gson;
     private GsonBuilder gsonBuilder;
     private boolean debug = false;
 
-    public void enableDebugging(){
-        debug = true;
-    }
-
-    public FileManager(FileManagerMain main) {
-        this.main = main;
+    public FileManager(File dataFolder) {
+        this.dataFolder = dataFolder;
         this.gsonBuilder = new GsonBuilder()
                 .setPrettyPrinting();
         reload();
     }
 
-    public FileManager(FileManagerMain main, GsonBuilder gsonBuilder) {
-        this.main = main;
+    public FileManager(FileManagerMain main) {
+        this(main.getDataFolder());
+    }
+
+    public FileManager(File dataFolder, GsonBuilder gsonBuilder) {
+        this.dataFolder = dataFolder;
         this.gsonBuilder = gsonBuilder;
+    }
+
+    public FileManager(FileManagerMain main, GsonBuilder gsonBuilder) {
+        this(main.getDataFolder(), gsonBuilder);
+    }
+
+    public void enableDebugging() {
+        debug = true;
     }
 
     private void reload() {
@@ -53,7 +63,7 @@ public class FileManager {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     public void save(Object object, String name) {
         String json = gson.toJson(object);
-        String path = main.getDataFolder() + "/" + name + extension;
+        String path = dataFolder + "/" + name + extension;
 
         //Create folders
         new File(path).getParentFile().mkdirs();
@@ -73,7 +83,7 @@ public class FileManager {
     public <T> T load(Class<T> clazz, String name) {
         try {
             StringBuilder json = new StringBuilder();
-            String path = main.getDataFolder() + "/" + name + extension;
+            String path = dataFolder + "/" + name + extension;
 
             //Create folders
             new File(path).getParentFile().mkdirs();

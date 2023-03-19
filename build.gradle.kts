@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "dev.lightdream"
-version = "2.4.4"
+version = "2.5.0"
 
 repositories {
     mavenCentral()
@@ -23,7 +23,7 @@ java {
 dependencies {
     // LightDream
     implementation("dev.lightdream:logger:3.1.0")
-    implementation("dev.lightdream:lambda:3.8.1")
+    implementation("dev.lightdream:lambda:4.0.0")
 
     // Google
     implementation("com.google.code.gson:gson:2.10")
