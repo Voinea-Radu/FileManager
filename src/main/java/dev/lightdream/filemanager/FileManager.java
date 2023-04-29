@@ -54,6 +54,9 @@ public class FileManager {
         FileManager.staticInstance = this;
     }
 
+    /**
+     * Enables low level debugging.
+     */
     public void enableDebugging() {
         debug = true;
     }
@@ -71,15 +74,26 @@ public class FileManager {
         reload();
     }
 
+    /**
+     * Saved an object ot disk in the form of a json file.
+     *
+     * @param object The object to save
+     */
     public void save(Object object) {
         save(object, object.getClass().getSimpleName().toLowerCase());
     }
 
+    /**
+     * Saved an object ot disk in the form of a json file.
+     *
+     * @param object The object to save
+     * @param file   The name of the file
+     */
     @SneakyThrows
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void save(Object object, String name) {
+    public void save(Object object, String file) {
         String json = gson.toJson(object);
-        String path = dataFolder + "/" + name + extension;
+        String path = dataFolder + "/" + file + extension;
 
         //Create folders
         new File(path).getParentFile().mkdirs();
@@ -90,16 +104,31 @@ public class FileManager {
         writer.close();
     }
 
+    /**
+     * Loads an object form a json file on the disk.
+     *
+     * @param clazz The class of the object
+     * @param <T>   The object type
+     * @return The loaded object
+     */
     public <T> T load(Class<T> clazz) {
         return load(clazz, clazz.getSimpleName().toLowerCase());
     }
 
+    /**
+     * Loads an object form a json file on the disk.
+     *
+     * @param clazz The class of the object
+     * @param file  File name
+     * @param <T>   The object type
+     * @return The loaded object
+     */
     @SneakyThrows
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public <T> T load(Class<T> clazz, String name) {
+    public <T> T load(Class<T> clazz, String file) {
         try {
             StringBuilder json = new StringBuilder();
-            String path = dataFolder + "/" + name + extension;
+            String path = dataFolder + "/" + file + extension;
 
             //Create folders
             new File(path).getParentFile().mkdirs();
@@ -119,7 +148,7 @@ public class FileManager {
                 e.printStackTrace();
             }
             T obj = clazz.getDeclaredConstructor().newInstance();
-            save(obj, name);
+            save(obj, file);
             return obj;
         }
     }
