@@ -3,6 +3,11 @@ project = "2.6.5"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version = "1.18.26" }
+
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
+
+junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.9.3" }
+junit_bom = { module = "org.junit:junit-bom", version = "5.9.3" }
+
 lightdream_logger = { module = "dev.lightdream:logger", version = "3.3.8" }
 lightdream_lambda = { module = "dev.lightdream:lambda", version = "4.1.14" }
