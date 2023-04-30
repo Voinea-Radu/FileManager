@@ -23,7 +23,7 @@ dependencies {
     api(libs.lightdream.lambda)
 
     // Google
-    implementation(libs.gson)
+    api(libs.gson)
 
     // Lombok
     compileOnly(libs.lombok)
