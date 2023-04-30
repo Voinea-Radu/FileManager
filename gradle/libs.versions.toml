@@ -4,5 +4,5 @@ project = "2.6.3"
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version = "1.18.26" }
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
-lightdream_logger = { module = "dev.lightdream:logger", version = "3.2.8" }
-lightdream_lambda = { module = "dev.lightdream:lambda", version = "4.1.7" }
+lightdream_logger = { module = "dev.lightdream:logger", version = "3.3.8" }
+lightdream_lambda = { module = "dev.lightdream:lambda", version = "4.1.14" }
