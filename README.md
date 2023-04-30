@@ -1,7 +1,7 @@
 # FileManager
 
 ![Build](../../actions/workflows/build.yml/badge.svg)
-![Version](https://img.shields.io/badge/Version-2.6.1-red.svg)
+![Version](https://img.shields.io/badge/Version-2.6.2-red.svg)
 
 # Table Of Contents
 
@@ -41,12 +41,12 @@ com.github.L1ghtDream instead of dev.lightdream)
     <dependency>
         <groupId>dev.lightdream</groupId>
         <artifactId>file-manager</artifactId>
-        <version>2.6.1</version>
+        <version>2.6.2</version>
     </dependency>
     <dependency>
         <groupId>com.github.L1ghtDream</groupId>
         <artifactId>file-manager</artifactId>
-        <version>2.6.1</version>
+        <version>2.6.2</version>
     </dependency>
 </dependencies>
 ```
@@ -60,8 +60,8 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.lightdream:file-manager:2.6.1"
-    implementation "com.github.L1ghtDream:file-manager:2.6.1"
+    implementation "dev.lightdream:file-manager:2.6.2"
+    implementation "com.github.L1ghtDream:file-manager:2.6.2"
 }
 ```
 
@@ -74,8 +74,8 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.lightdream:file-manager:2.6.1")
-    implementation("com.github.L1ghtDream:file-manager:2.6.1")
+    implementation("dev.lightdream:file-manager:2.6.2")
+    implementation("com.github.L1ghtDream:file-manager:2.6.2")
 }
 ```
 
@@ -84,4 +84,53 @@ using https://archive-repo.lightdream.dev
 
 ## How to use
 
-Can be found in the [repository](/src/main/java/example)
+### Create the main
+
+```java
+public class ExampleMain implements FileManagerMain {
+
+    public ExampleMain(GsonBuilder builder) {
+        FileManager fileManager = new FileManager(this);
+
+        // If you have any custom serializers you can use the FileManager#setGsonBuilder method
+        fileManager.setGsonBuilder(builder);
+
+        // If you want the FileManager instance to be accessible from a static context you can sue
+        fileManager.setStatic();
+        FileManager fileManagerFromStatic = FileManager.get();
+    }
+
+    @Override
+    public String getPath() {
+        return "config/Example";
+    }
+}
+
+```
+
+### Working with the file manager
+
+You can use any class that is serializable by JSON.
+
+```java
+public class Foo {
+    private int property1;
+    private String property2;
+}
+```
+
+To save or load the class from or to disk you can use the `FileManager#save` and `FileManager#load` methods
+
+```java
+public class ExampleClass {
+    public void save(FileManager fileManager) {
+        Foo bar = new Foo();
+        fileManager.save(bar);
+    }
+
+    public void load(FileManager fileManager) {
+        Foo bar = fileManager.load(Foo.class);
+    }
+}
+
+```
