@@ -7,6 +7,8 @@ import lombok.Setter;
 import lombok.SneakyThrows;
 
 import java.io.*;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 @SuppressWarnings("unused")
 public class FileManager {
@@ -22,8 +24,7 @@ public class FileManager {
 
     public FileManager(File dataFolder) {
         this.dataFolder = dataFolder;
-        this.gsonBuilder = new GsonBuilder()
-                .setPrettyPrinting();
+        this.gsonBuilder = new GsonBuilder().setPrettyPrinting();
         reload();
     }
 
@@ -80,25 +81,45 @@ public class FileManager {
      * @param object The object to save
      */
     public void save(Object object) {
-        save(object, object.getClass().getSimpleName().toLowerCase());
+        Class<?> clazz = object.getClass();
+        Saveable saveable = null;
+
+        if (clazz.isAnnotationPresent(Saveable.class)) {
+            saveable = clazz.getAnnotation(Saveable.class);
+        }
+
+        String directory = saveable == null ? "" : saveable.directory();
+        String fileName = saveable == null ? toSnakeCase(clazz.getSimpleName()) : saveable.fileName();
+
+        save(object, directory, fileName);
     }
 
-    /**
-     * Saved an object ot disk in the form of a json file.
-     *
-     * @param object The object to save
-     * @param file   The name of the file
-     */
-    @SneakyThrows
+    private String toSnakeCase(String string) {
+        String output = string.replaceAll("([A-Z])", "_$1").toLowerCase();
+
+        if(output.startsWith("_")){
+            output = output.substring(1);
+        }
+
+        return output;
+    }
+
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public void save(Object object, String file) {
+    @SneakyThrows
+    public void save(Object object, String directory, String fileName) {
         String json = gson.toJson(object);
-        String path = dataFolder + "/" + file + extension;
+
+        if (!fileName.endsWith(extension)) {
+            fileName += extension;
+        }
+
+        Path path = Paths.get(dataFolder.getPath(), directory, fileName);
 
         //Create folders
-        new File(path).getParentFile().mkdirs();
+        File file = path.toFile();
+        file.getParentFile().mkdirs();
 
-        BufferedWriter writer = new BufferedWriter(new FileWriter(path));
+        BufferedWriter writer = new BufferedWriter(new FileWriter(file));
         writer.write(json);
 
         writer.close();
@@ -112,28 +133,43 @@ public class FileManager {
      * @return The loaded object
      */
     public <T> T load(Class<T> clazz) {
-        return load(clazz, clazz.getSimpleName().toLowerCase());
+        Saveable saveable = null;
+
+        if (clazz.isAnnotationPresent(Saveable.class)) {
+            saveable = clazz.getAnnotation(Saveable.class);
+        }
+
+        String directory = saveable == null ? "" : saveable.directory();
+        String fileName = saveable == null ? toSnakeCase(clazz.getSimpleName()) : saveable.fileName();
+
+        return load(clazz, directory, fileName);
     }
 
     /**
      * Loads an object form a json file on the disk.
      *
-     * @param clazz The class of the object
-     * @param file  File name
-     * @param <T>   The object type
+     * @param clazz     The class of the object
+     * @param directory Target directory
+     * @param fileName  File name
+     * @param <T>       The object type
      * @return The loaded object
      */
-    @SneakyThrows
     @SuppressWarnings("ResultOfMethodCallIgnored")
-    public <T> T load(Class<T> clazz, String file) {
+    @SneakyThrows
+    public <T> T load(Class<T> clazz, String directory, String fileName) {
         try {
-            StringBuilder json = new StringBuilder();
-            String path = dataFolder + "/" + file + extension;
+            if (!fileName.endsWith(extension)) {
+                fileName += extension;
+            }
+
+            Path path = Paths.get(dataFolder.getPath(), directory, fileName);
 
             //Create folders
-            new File(path).getParentFile().mkdirs();
+            File file = path.toFile();
+            file.getParentFile().mkdirs();
 
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(path));
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            StringBuilder json = new StringBuilder();
 
             String curLine;
             while ((curLine = bufferedReader.readLine()) != null) {
@@ -148,9 +184,10 @@ public class FileManager {
                 e.printStackTrace();
             }
             T obj = clazz.getDeclaredConstructor().newInstance();
-            save(obj, file);
+            save(obj, directory, fileName);
             return obj;
         }
     }
+
 
 }

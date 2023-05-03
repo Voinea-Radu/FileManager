@@ -32,7 +32,7 @@ public class FileManagerTests {
 
     @Test
     public void testObjectSaveLoad() {
-        TestObject object = new TestObject(100, "test");
+        TestObject object = new TestObject(101, "test1");
 
         FileManager.get().save(object);
 
@@ -40,6 +40,21 @@ public class FileManagerTests {
 
         assertEquals(object.data1, loadedObject.data1);
         assertEquals(object.data2, loadedObject.data2);
+    }
+
+    @Test
+    public void testObjectSaveLoadOfAnnotatedObjects() {
+        NewTestObject object1 = new NewTestObject(102, "test2");
+        NewTestObjectNoExtension object2 = new NewTestObjectNoExtension(103, "test3");
+
+        FileManager.get().save(object1);
+        FileManager.get().save(object2);
+
+        NewTestObject loadedObject1 = FileManager.get().load(NewTestObject.class);
+        NewTestObjectNoExtension loadedObject2 = FileManager.get().load(NewTestObjectNoExtension.class);
+
+        assertEquals(object1.data1, loadedObject1.data1);
+        assertEquals(object2.data2, loadedObject2.data2);
     }
 
 
