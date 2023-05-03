@@ -89,7 +89,9 @@ public class FileManager {
         }
 
         String directory = saveable == null ? "" : saveable.directory();
-        String fileName = saveable == null ? toSnakeCase(clazz.getSimpleName()) : saveable.fileName();
+        String fileName = saveable == null ? toSnakeCase(clazz.getSimpleName()) :
+                saveable.fileName().equals("") ?
+                        toSnakeCase(clazz.getSimpleName()) : saveable.fileName();
 
         save(object, directory, fileName);
     }
@@ -97,7 +99,7 @@ public class FileManager {
     private String toSnakeCase(String string) {
         String output = string.replaceAll("([A-Z])", "_$1").toLowerCase();
 
-        if(output.startsWith("_")){
+        if (output.startsWith("_")) {
             output = output.substring(1);
         }
 
@@ -140,7 +142,9 @@ public class FileManager {
         }
 
         String directory = saveable == null ? "" : saveable.directory();
-        String fileName = saveable == null ? toSnakeCase(clazz.getSimpleName()) : saveable.fileName();
+        String fileName = saveable == null ? toSnakeCase(clazz.getSimpleName()) :
+                saveable.fileName().equals("") ?
+                        toSnakeCase(clazz.getSimpleName()) : saveable.fileName();
 
         return load(clazz, directory, fileName);
     }

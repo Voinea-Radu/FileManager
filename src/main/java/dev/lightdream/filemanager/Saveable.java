@@ -9,8 +9,8 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface Saveable {
 
-    String directory();
+    String directory() default "";
 
-    String fileName();
+    String fileName() default "";
 
 }
