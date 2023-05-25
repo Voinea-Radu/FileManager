@@ -2,7 +2,7 @@
 project = "2.7.2"
 
 [libraries]
-lombok = { module = "org.projectlombok:lombok", version = "1.18.26" }
+lombok = { module = "org.projectlombok:lombok", version = "1.18.28" }
 
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 
