@@ -10,4 +10,4 @@ junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.10.0
 junit_bom = { module = "org.junit:junit-bom", version = "5.10.0" }
 
 lightdream_logger = { module = "dev.lightdream:logger", version = "3.3.14" }
-lightdream_lambda = { module = "dev.lightdream:lambda", version = "4.1.22" }
+lightdream_lambda = { module = "dev.lightdream:lambda", version = "4.1.23" }
