@@ -1,13 +1,13 @@
 [versions]
-project = "2.7.2"
+project = "2.7.12"
 
 [libraries]
-lombok = { module = "org.projectlombok:lombok", version = "1.18.26" }
+lombok = { module = "org.projectlombok:lombok", version = "1.18.28" }
 
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 
-junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.9.3" }
-junit_bom = { module = "org.junit:junit-bom", version = "5.9.3" }
+junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.10.0" }
+junit_bom = { module = "org.junit:junit-bom", version = "5.10.0" }
 
-lightdream_logger = { module = "dev.lightdream:logger", version = "3.3.10" }
-lightdream_lambda = { module = "dev.lightdream:lambda", version = "4.1.14" }
+lightdream_logger = { module = "dev.lightdream:logger", version = "3.3.14" }
+lightdream_lambda = { module = "dev.lightdream:lambda", version = "4.1.23" }
