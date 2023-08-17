@@ -21,4 +21,11 @@ public interface FileManagerMain {
      */
     String getPath();
 
+    /**
+     * @return Whether to complete missing after loading a file
+     */
+    default  boolean autoCompleteConfig(){
+        return false;
+    }
+
 }

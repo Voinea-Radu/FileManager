@@ -3,6 +3,7 @@ package dev.lightdream.filemanager;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lightdream.logger.Logger;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
 
@@ -15,31 +16,24 @@ public class FileManager {
 
     private static FileManager staticInstance;
 
-    private final File dataFolder;
+    private final FileManagerMain main;
 
     private @Setter String extension = ".json";
     private Gson gson;
+    @Getter
     private GsonBuilder gsonBuilder;
     private boolean debug = false;
 
-    public FileManager(File dataFolder) {
-        this.dataFolder = dataFolder;
-        this.gsonBuilder = new GsonBuilder().setPrettyPrinting();
-        reload();
-    }
-
     public FileManager(FileManagerMain main) {
-        this(main.getDataFolder());
-    }
-
-    public FileManager(File dataFolder, GsonBuilder gsonBuilder) {
-        this.dataFolder = dataFolder;
-        this.gsonBuilder = gsonBuilder;
+        this(main, new GsonBuilder().setPrettyPrinting());
     }
 
     public FileManager(FileManagerMain main, GsonBuilder gsonBuilder) {
-        this(main.getDataFolder(), gsonBuilder);
+        this.main = main;
+        this.gsonBuilder = gsonBuilder;
+        reload();
     }
+
 
     /**
      * @return The static instance of the FileManager or null if {@link #setStatic()} was not called
@@ -66,10 +60,6 @@ public class FileManager {
         this.gson = gsonBuilder.create();
     }
 
-    public GsonBuilder getGsonBuilder() {
-        return gsonBuilder;
-    }
-
     public void setGsonBuilder(GsonBuilder gsonBuilder) {
         this.gsonBuilder = gsonBuilder;
         reload();
@@ -90,7 +80,7 @@ public class FileManager {
 
         String directory = saveable == null ? "" : saveable.directory();
         String fileName = saveable == null ? toSnakeCase(clazz.getSimpleName()) :
-                saveable.fileName().equals("") ?
+                saveable.fileName().isEmpty() ?
                         toSnakeCase(clazz.getSimpleName()) : saveable.fileName();
 
         save(object, directory, fileName);
@@ -115,7 +105,7 @@ public class FileManager {
             fileName += extension;
         }
 
-        Path path = Paths.get(dataFolder.getPath(), directory, fileName);
+        Path path = Paths.get(main.getDataFolder().getPath(), directory, fileName);
 
         //Create folders
         File file = path.toFile();
@@ -143,7 +133,7 @@ public class FileManager {
 
         String directory = saveable == null ? "" : saveable.directory();
         String fileName = saveable == null ? toSnakeCase(clazz.getSimpleName()) :
-                saveable.fileName().equals("") ?
+                saveable.fileName().isEmpty() ?
                         toSnakeCase(clazz.getSimpleName()) : saveable.fileName();
 
         return load(clazz, directory, fileName);
@@ -166,7 +156,7 @@ public class FileManager {
                 fileName += extension;
             }
 
-            Path path = Paths.get(dataFolder.getPath(), directory, fileName);
+            Path path = Paths.get(main.getDataFolder().getPath(), directory, fileName);
 
             //Create folders
             File file = path.toFile();
@@ -181,10 +171,17 @@ public class FileManager {
             }
             bufferedReader.close();
 
-            return gson.fromJson(json.toString(), clazz);
+            T output = gson.fromJson(json.toString(), clazz);
+
+            if (main.autoCompleteConfig()) {
+                save(output);
+            }
+
+            return output;
         } catch (Exception e) {
             Logger.warn("Could not load " + clazz.getSimpleName() + ". Creating and saving new instance.");
             if (debug) {
+                //noinspection CallToPrintStackTrace
                 e.printStackTrace();
             }
             T obj = clazz.getDeclaredConstructor().newInstance();
