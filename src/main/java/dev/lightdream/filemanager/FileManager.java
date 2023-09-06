@@ -44,7 +44,7 @@ public class FileManager {
         FileManager.staticInstance = this;
     }
 
-    public void registerSerializer(GsonSerializer<?> serializer){
+    public void registerSerializer(GsonSerializer<?> serializer) {
         serializer.register(this);
     }
 
