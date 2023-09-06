@@ -1,5 +1,7 @@
 package dev.lightdream.filemanager;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.io.File;
 
 public interface FileManagerMain {
@@ -7,7 +9,7 @@ public interface FileManagerMain {
     /**
      * @return The exact file location of where to save the json files
      */
-    default File getDataFolder() {
+    default @NotNull File getDataFolder() {
         String path = getPath();
         if (!path.startsWith("/")) {
             path = "/" + path;
@@ -19,12 +21,12 @@ public interface FileManagerMain {
     /**
      * @return The relative path from the jar working directory in which to save the json files.
      */
-    String getPath();
+    @NotNull String getPath();
 
     /**
      * @return Whether to complete missing after loading a file
      */
-    default  boolean autoCompleteConfig(){
+    default boolean autoCompleteConfig() {
         return false;
     }
 

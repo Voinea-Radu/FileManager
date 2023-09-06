@@ -6,6 +6,8 @@ import dev.lightdream.logger.Logger;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -34,7 +36,7 @@ public class FileManager {
         reload();
     }
 
-    public static FileManager get() {
+    public static @Nullable FileManager get() {
         return FileManager.staticInstance;
     }
 
@@ -75,7 +77,7 @@ public class FileManager {
         save(object, directory, fileName);
     }
 
-    private String toSnakeCase(String string) {
+    private @NotNull String toSnakeCase(@NotNull String string) {
         String output = string.replaceAll("([A-Z])", "_$1").toLowerCase();
 
         if (output.startsWith("_")) {
@@ -87,7 +89,7 @@ public class FileManager {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SneakyThrows
-    public void save(Object object, String directory, String fileName) {
+    public void save(@NotNull Object object, @NotNull String directory, @NotNull String fileName) {
         String json = gson.toJson(object);
 
         if (!fileName.endsWith(extension)) {
@@ -113,7 +115,7 @@ public class FileManager {
      * @param <T>   The object type
      * @return The loaded object
      */
-    public <T> T load(Class<T> clazz) {
+    public <T> @NotNull T load(@NotNull Class<T> clazz) {
         Saveable saveable = null;
 
         if (clazz.isAnnotationPresent(Saveable.class)) {
@@ -139,7 +141,8 @@ public class FileManager {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SneakyThrows
-    public <T> T load(Class<T> clazz, String directory, String fileName) {
+    public <T> @NotNull T load(@NotNull Class<T> clazz, @NotNull String directory,
+                               @NotNull String fileName) {
         try {
             if (!fileName.endsWith(extension)) {
                 fileName += extension;
