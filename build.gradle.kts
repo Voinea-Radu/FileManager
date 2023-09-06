@@ -25,6 +25,9 @@ dependencies {
     // Google
     api(libs.gson)
 
+    // JetBrains
+    api(libs.jetbrains.annotations)
+
     // Lombok
     compileOnly(libs.lombok)
     testCompileOnly(libs.lombok)

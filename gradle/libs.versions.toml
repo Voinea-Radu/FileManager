@@ -1,8 +1,9 @@
 [versions]
-project = "2.7.15"
+project = "2.7.16"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version = "1.18.28" }
+jetbrains_annotations = {module="org.jetbrains:annotations", version="24.0.1"}
 
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 
