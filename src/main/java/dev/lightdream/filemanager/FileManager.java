@@ -34,24 +34,18 @@ public class FileManager {
         reload();
     }
 
-
-    /**
-     * @return The static instance of the FileManager or null if {@link #setStatic()} was not called
-     */
     public static FileManager get() {
         return FileManager.staticInstance;
     }
 
-    /**
-     * Sets the static instance of the FileManager
-     */
     public void setStatic() {
         FileManager.staticInstance = this;
     }
 
-    /**
-     * Enables low level debugging.
-     */
+    public void registerSerializer(GsonSerializer<?> serializer){
+        serializer.register(this);
+    }
+
     public void enableDebugging() {
         debug = true;
     }
@@ -65,11 +59,6 @@ public class FileManager {
         reload();
     }
 
-    /**
-     * Saved an object ot disk in the form of a json file.
-     *
-     * @param object The object to save
-     */
     public void save(Object object) {
         Class<?> clazz = object.getClass();
         Saveable saveable = null;
