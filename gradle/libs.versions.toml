@@ -7,8 +7,8 @@ jetbrains_annotations = {module="org.jetbrains:annotations", version="24.0.1"}
 
 gson = { module = "com.google.code.gson:gson", version = "2.10.1" }
 
-junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.10.0" }
-junit_bom = { module = "org.junit:junit-bom", version = "5.10.0" }
+junit_jupiter = { module = "org.junit.jupiter:junit-jupiter ", version = "5.10.1" }
+junit_bom = { module = "org.junit:junit-bom", version = "5.10.1" }
 
 lightdream_logger = { module = "dev.lightdream:logger", version = "3.3.15" }
 lightdream_lambda = { module = "dev.lightdream:lambda", version = "5.0.10" }
