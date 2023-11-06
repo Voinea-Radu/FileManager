@@ -34,9 +34,9 @@ public class FileManagerTests {
     public void testObjectSaveLoad() {
         TestObject object = new TestObject(101, "test1");
 
-        FileManager.get().save(object);
+        FileManager.save(object);
 
-        TestObject loadedObject = FileManager.get().load(TestObject.class);
+        TestObject loadedObject = FileManager.load(TestObject.class);
 
         assertEquals(object.data1, loadedObject.data1);
         assertEquals(object.data2, loadedObject.data2);
@@ -48,13 +48,13 @@ public class FileManagerTests {
         NewTestObjectNoExtension object2 = new NewTestObjectNoExtension(103, "test3");
         NewTestObjectNoFile object3 = new NewTestObjectNoFile(104, "test4");
 
-        FileManager.get().save(object1);
-        FileManager.get().save(object2);
-        FileManager.get().save(object3);
+        FileManager.save(object1);
+        FileManager.save(object2);
+        FileManager.save(object3);
 
-        NewTestObject loadedObject1 = FileManager.get().load(NewTestObject.class);
-        NewTestObjectNoExtension loadedObject2 = FileManager.get().load(NewTestObjectNoExtension.class);
-        NewTestObjectNoFile loadedObject3 = FileManager.get().load(NewTestObjectNoFile.class);
+        NewTestObject loadedObject1 = FileManager.load(NewTestObject.class);
+        NewTestObjectNoExtension loadedObject2 = FileManager.load(NewTestObjectNoExtension.class);
+        NewTestObjectNoFile loadedObject3 = FileManager.load(NewTestObjectNoFile.class);
 
         assertEquals(object1.data1, loadedObject1.data1);
         assertEquals(object1.data2, loadedObject1.data2);

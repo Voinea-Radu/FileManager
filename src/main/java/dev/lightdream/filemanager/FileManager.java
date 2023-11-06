@@ -4,10 +4,11 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import dev.lightdream.logger.Logger;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
+import lombok.experimental.Accessors;
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.nio.file.Path;
@@ -16,54 +17,15 @@ import java.nio.file.Paths;
 @SuppressWarnings("unused")
 public class FileManager {
 
-    private static FileManager staticInstance;
+    private static @Getter Settings settings;
+    private static Gson gson;
 
-    private final FileManagerMain main;
-
-    private @Setter String extension = ".json";
-    private @Getter Gson gson;
-
-    private @Getter GsonBuilder gsonBuilder;
-    private boolean debug = false;
-
-    public FileManager(FileManagerMain main) {
-        this(main, new GsonBuilder().setPrettyPrinting());
+    public static void init(@NotNull Settings settings) {
+        FileManager.settings = settings;
+        FileManager.gson = settings.gsonBuilder.create();
     }
 
-    public FileManager(FileManagerMain main, GsonBuilder gsonBuilder) {
-        this.main = main;
-        this.gsonBuilder = gsonBuilder;
-        reload();
-    }
-
-    public static @Nullable FileManager get() {
-        return FileManager.staticInstance;
-    }
-
-    public void setStatic() {
-        FileManager.staticInstance = this;
-    }
-
-    public void registerSerializer(GsonSerializer<?> serializer) {
-        setGsonBuilder(
-                getGsonBuilder().registerTypeAdapter(serializer.getClazz(), serializer)
-        );
-    }
-
-    public void enableDebugging() {
-        debug = true;
-    }
-
-    private void reload() {
-        this.gson = gsonBuilder.create();
-    }
-
-    public void setGsonBuilder(GsonBuilder gsonBuilder) {
-        this.gsonBuilder = gsonBuilder;
-        reload();
-    }
-
-    public void save(Object object) {
+    public static void save(Object object) {
         Class<?> clazz = object.getClass();
         Saveable saveable = null;
 
@@ -79,7 +41,7 @@ public class FileManager {
         save(object, directory, fileName);
     }
 
-    private @NotNull String toSnakeCase(@NotNull String string) {
+    private static @NotNull String toSnakeCase(@NotNull String string) {
         String output = string.replaceAll("([A-Z])", "_$1").toLowerCase();
 
         if (output.startsWith("_")) {
@@ -91,14 +53,14 @@ public class FileManager {
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SneakyThrows
-    public void save(@NotNull Object object, @NotNull String directory, @NotNull String fileName) {
+    public static void save(@NotNull Object object, @NotNull String directory, @NotNull String fileName) {
         String json = gson.toJson(object);
 
-        if (!fileName.endsWith(extension)) {
-            fileName += extension;
+        if (!fileName.endsWith(settings.extension)) {
+            fileName += settings.extension;
         }
 
-        Path path = Paths.get(main.getDataFolder().getPath(), directory, fileName);
+        Path path = Paths.get(settings.getDataFolder().getPath(), directory, fileName);
 
         //Create folders
         File file = path.toFile();
@@ -117,7 +79,7 @@ public class FileManager {
      * @param <T>   The object type
      * @return The loaded object
      */
-    public <T> @NotNull T load(@NotNull Class<T> clazz) {
+    public static <T> @NotNull T load(@NotNull Class<T> clazz) {
         Saveable saveable = null;
 
         if (clazz.isAnnotationPresent(Saveable.class)) {
@@ -143,14 +105,14 @@ public class FileManager {
      */
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SneakyThrows
-    public <T> @NotNull T load(@NotNull Class<T> clazz, @NotNull String directory,
+    public static <T> @NotNull T load(@NotNull Class<T> clazz, @NotNull String directory,
                                @NotNull String fileName) {
         try {
-            if (!fileName.endsWith(extension)) {
-                fileName += extension;
+            if (!fileName.endsWith(settings.extension)) {
+                fileName += settings.extension;
             }
 
-            Path path = Paths.get(main.getDataFolder().getPath(), directory, fileName);
+            Path path = Paths.get(settings.getDataFolder().getPath(), directory, fileName);
 
             //Create folders
             File file = path.toFile();
@@ -167,20 +129,42 @@ public class FileManager {
 
             T output = gson.fromJson(json.toString(), clazz);
 
-            if (main.autoCompleteConfig()) {
+            if (settings.autoCompleteConfig()) {
                 save(output);
             }
 
             return output;
         } catch (Exception e) {
             Logger.warn("Could not load " + clazz.getSimpleName() + ". Creating and saving new instance.");
-            if (debug) {
-                //noinspection CallToPrintStackTrace
-                e.printStackTrace();
-            }
             T obj = clazz.getDeclaredConstructor().newInstance();
             save(obj, directory, fileName);
             return obj;
+        }
+    }
+
+    @Getter
+    @Setter
+    @Accessors(chain = true, fluent = true)
+    @NoArgsConstructor
+    public static class Settings {
+
+        private boolean autoCompleteConfig = false;
+        private @NotNull String path = "";
+        private @NotNull String extension = ".json";
+        private @NotNull GsonBuilder gsonBuilder = new GsonBuilder()
+                .setPrettyPrinting();
+
+        public @NotNull File getDataFolder() {
+            String path = path();
+            if (!path.startsWith("/")) {
+                path = "/" + path;
+            }
+
+            return new File(System.getProperty("user.dir") + path);
+        }
+
+        public void build() {
+            FileManager.init(this);
         }
     }
 

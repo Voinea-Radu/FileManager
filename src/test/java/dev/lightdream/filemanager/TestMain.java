@@ -1,14 +1,14 @@
 package dev.lightdream.filemanager;
 
-public class TestMain implements FileManagerMain {
+import lombok.Getter;
+
+@Getter
+public class TestMain {
 
     public TestMain() {
-        FileManager fileManager = new FileManager(this);
-        fileManager.setStatic();
-    }
-
-    @Override
-    public String getPath() {
-        return "tmp-config";
+        new FileManager.Settings()
+                .path("tmp-config")
+                .build();
     }
 }
+
