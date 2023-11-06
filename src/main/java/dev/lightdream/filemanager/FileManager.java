@@ -21,9 +21,9 @@ public class FileManager {
     private final FileManagerMain main;
 
     private @Setter String extension = ".json";
-    private Gson gson;
-    @Getter
-    private GsonBuilder gsonBuilder;
+    private @Getter Gson gson;
+
+    private @Getter GsonBuilder gsonBuilder;
     private boolean debug = false;
 
     public FileManager(FileManagerMain main) {
@@ -45,7 +45,9 @@ public class FileManager {
     }
 
     public void registerSerializer(GsonSerializer<?> serializer) {
-        serializer.register(this);
+        setGsonBuilder(
+                getGsonBuilder().registerTypeAdapter(serializer.getClazz(), serializer)
+        );
     }
 
     public void enableDebugging() {
