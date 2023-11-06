@@ -20,6 +20,10 @@ public class FileManager {
     private static @Getter Settings settings;
     private static Gson gson;
 
+    static {
+        init(new Settings());
+    }
+
     public static void init(@NotNull Settings settings) {
         FileManager.settings = settings;
         FileManager.gson = settings.gsonBuilder.create();
