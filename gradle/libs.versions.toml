@@ -1,5 +1,5 @@
 [versions]
-project = "3.0.-1"
+project = "3.0.0"
 
 [libraries]
 lombok = { module = "org.projectlombok:lombok", version = "1.18.30" }
