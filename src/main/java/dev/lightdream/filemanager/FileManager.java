@@ -106,7 +106,7 @@ public class FileManager {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SneakyThrows
     public static <T> @NotNull T load(@NotNull Class<T> clazz, @NotNull String directory,
-                               @NotNull String fileName) {
+                                      @NotNull String fileName) {
         try {
             if (!fileName.endsWith(settings.extension)) {
                 fileName += settings.extension;
