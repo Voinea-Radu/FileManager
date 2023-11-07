@@ -172,14 +172,10 @@ public class FileManager {
         return new File(System.getProperty("user.dir") + path);
     }
 
-    @Getter
-    @Setter
-    @Accessors(chain = true, fluent = true)
     public static class Builder extends _Builder {
         public FileManager build() {
             return super.build().init();
         }
     }
-
 
 }
