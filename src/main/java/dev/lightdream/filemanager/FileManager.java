@@ -1,10 +1,7 @@
 package dev.lightdream.filemanager;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import dev.lightdream.logger.Logger;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.SneakyThrows;
 import lombok.experimental.Accessors;
@@ -18,7 +15,6 @@ import java.nio.file.Paths;
 public class FileManager {
 
     private static @Getter Settings settings;
-    private static Gson gson;
 
     static {
         init(new Settings());
@@ -26,7 +22,6 @@ public class FileManager {
 
     public static void init(@NotNull Settings settings) {
         FileManager.settings = settings;
-        FileManager.gson = settings.gsonBuilder.create();
     }
 
     public static void save(Object object) {
@@ -58,7 +53,7 @@ public class FileManager {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SneakyThrows
     public static void save(@NotNull Object object, @NotNull String directory, @NotNull String fileName) {
-        String json = gson.toJson(object);
+        String json = settings.gsonSettings().gson().toJson(object);
 
         if (!fileName.endsWith(settings.extension)) {
             fileName += settings.extension;
@@ -131,7 +126,7 @@ public class FileManager {
             }
             bufferedReader.close();
 
-            T output = gson.fromJson(json.toString(), clazz);
+            T output = settings.gsonSettings().gson().fromJson(json.toString(), clazz);
 
             if (settings.autoCompleteConfig()) {
                 save(output);
@@ -149,14 +144,21 @@ public class FileManager {
     @Getter
     @Setter
     @Accessors(chain = true, fluent = true)
-    @NoArgsConstructor
     public static class Settings {
 
+        private GsonSettings gsonSettings;
         private boolean autoCompleteConfig = false;
         private @NotNull String path = "";
         private @NotNull String extension = ".json";
-        private @NotNull GsonBuilder gsonBuilder = new GsonBuilder()
-                .setPrettyPrinting();
+
+        public Settings() {
+            this.gsonSettings = new GsonSettings();
+
+            gsonSettings.gsonBuilder()
+                    .setPrettyPrinting();
+
+            gsonSettings.update();
+        }
 
         public @NotNull File getDataFolder() {
             String path = path();

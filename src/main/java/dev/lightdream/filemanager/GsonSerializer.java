@@ -11,6 +11,7 @@ public interface GsonSerializer<T> extends JsonSerializer<T>, JsonDeserializer<T
     @SuppressWarnings("unused")
     default void register() {
         FileManager.getSettings()
+                .gsonSettings()
                 .gsonBuilder()
                 .registerTypeAdapter(getClazz(), this);
 
