@@ -17,6 +17,11 @@ public class GsonSettings {
     private @NotNull GsonBuilder gsonBuilder = new GsonBuilder();
     private Gson gson = gsonBuilder.create();
 
+    public GsonSettings(@NotNull GsonBuilder builder) {
+        this.gsonBuilder = builder;
+        update();
+    }
+
     public void update() {
         this.gson = gsonBuilder.create();
     }

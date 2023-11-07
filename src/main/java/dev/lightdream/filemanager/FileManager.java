@@ -1,6 +1,8 @@
 package dev.lightdream.filemanager;
 
+import com.google.gson.GsonBuilder;
 import dev.lightdream.logger.Logger;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -11,18 +13,29 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@SuppressWarnings("unused")
+@Builder(builderClassName = "_Builder", toBuilder = true)
+@Getter
+@Setter
+@Accessors(chain = true, fluent = true)
 public class FileManager {
 
-    private static @Getter Settings settings;
+    private static @Getter FileManager instance;
 
     static {
-        init(new Settings());
+        builder().build();
     }
 
-    public static void init(@NotNull Settings settings) {
-        FileManager.settings = settings;
-    }
+    @lombok.Builder.Default
+    private GsonSettings gsonSettings = new GsonSettings(
+            new GsonBuilder()
+                    .setPrettyPrinting()
+    );
+    @lombok.Builder.Default
+    private boolean autoCompleteConfig = false;
+    @lombok.Builder.Default
+    private @NotNull String path = "";
+    @lombok.Builder.Default
+    private @NotNull String extension = ".json";
 
     public static void save(Object object) {
         Class<?> clazz = object.getClass();
@@ -53,13 +66,13 @@ public class FileManager {
     @SuppressWarnings("ResultOfMethodCallIgnored")
     @SneakyThrows
     public static void save(@NotNull Object object, @NotNull String directory, @NotNull String fileName) {
-        String json = settings.gsonSettings().gson().toJson(object);
+        String json = instance.gsonSettings().gson().toJson(object);
 
-        if (!fileName.endsWith(settings.extension)) {
-            fileName += settings.extension;
+        if (!fileName.endsWith(instance.extension)) {
+            fileName += instance.extension;
         }
 
-        Path path = Paths.get(settings.getDataFolder().getPath(), directory, fileName);
+        Path path = Paths.get(instance.getDataFolder().getPath(), directory, fileName);
 
         //Create folders
         File file = path.toFile();
@@ -107,11 +120,11 @@ public class FileManager {
     public static <T> @NotNull T load(@NotNull Class<T> clazz, @NotNull String directory,
                                       @NotNull String fileName) {
         try {
-            if (!fileName.endsWith(settings.extension)) {
-                fileName += settings.extension;
+            if (!fileName.endsWith(instance.extension)) {
+                fileName += instance.extension;
             }
 
-            Path path = Paths.get(settings.getDataFolder().getPath(), directory, fileName);
+            Path path = Paths.get(instance.getDataFolder().getPath(), directory, fileName);
 
             //Create folders
             File file = path.toFile();
@@ -126,9 +139,9 @@ public class FileManager {
             }
             bufferedReader.close();
 
-            T output = settings.gsonSettings().gson().fromJson(json.toString(), clazz);
+            T output = instance.gsonSettings().gson().fromJson(json.toString(), clazz);
 
-            if (settings.autoCompleteConfig()) {
+            if (instance.autoCompleteConfig()) {
                 save(output);
             }
 
@@ -141,36 +154,30 @@ public class FileManager {
         }
     }
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
+    public FileManager init() {
+        instance = this;
+        return this;
+    }
+
+    public @NotNull File getDataFolder() {
+        String path = path();
+        if (!path.startsWith("/")) {
+            path = "/" + path;
+        }
+
+        return new File(System.getProperty("user.dir") + path);
+    }
+
     @Getter
     @Setter
     @Accessors(chain = true, fluent = true)
-    public static class Settings {
-
-        private GsonSettings gsonSettings;
-        private boolean autoCompleteConfig = false;
-        private @NotNull String path = "";
-        private @NotNull String extension = ".json";
-
-        public Settings() {
-            this.gsonSettings = new GsonSettings();
-
-            gsonSettings.gsonBuilder()
-                    .setPrettyPrinting();
-
-            gsonSettings.update();
-        }
-
-        public @NotNull File getDataFolder() {
-            String path = path();
-            if (!path.startsWith("/")) {
-                path = "/" + path;
-            }
-
-            return new File(System.getProperty("user.dir") + path);
-        }
-
-        public void build() {
-            FileManager.init(this);
+    public static class Builder extends _Builder {
+        public FileManager build() {
+            return super.build().init();
         }
     }
 

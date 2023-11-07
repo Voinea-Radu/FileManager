@@ -12,7 +12,10 @@ public class FileManagerTests {
 
     @BeforeAll
     public static void init() {
-        new TestMain();
+        FileManager.builder()
+                .path("tmp-config")
+                .build();
+        cleanup();
     }
 
     @SuppressWarnings("ResultOfMethodCallIgnored")
