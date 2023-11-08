@@ -2,7 +2,6 @@ package dev.lightdream.filemanager;
 
 import com.google.gson.GsonBuilder;
 import dev.lightdream.logger.Logger;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.SneakyThrows;
@@ -13,7 +12,6 @@ import java.io.*;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-@Builder(builderClassName = "_Builder", toBuilder = true)
 @Getter
 @Setter
 @Accessors(chain = true, fluent = true)
@@ -25,17 +23,20 @@ public class FileManager {
         builder().build();
     }
 
-    @lombok.Builder.Default
-    private GsonSettings gsonSettings = new GsonSettings(
-            new GsonBuilder()
-                    .setPrettyPrinting()
-    );
-    @lombok.Builder.Default
-    private boolean autoCompleteConfig = false;
-    @lombok.Builder.Default
-    private @NotNull String path = "";
-    @lombok.Builder.Default
-    private @NotNull String extension = ".json";
+    private GsonSettings gsonSettings;
+    private boolean autoCompleteConfig;
+    private @NotNull String path;
+    private @NotNull String extension;
+
+    @lombok.Builder(builderClassName = "Builder")
+    public FileManager(GsonSettings gsonSettings, boolean autoCompleteConfig, @NotNull String path, @NotNull String extension) {
+        instance = this;
+
+        this.gsonSettings = gsonSettings;
+        this.autoCompleteConfig = autoCompleteConfig;
+        this.path = path;
+        this.extension = extension;
+    }
 
     public static void save(Object object) {
         Class<?> clazz = object.getClass();
@@ -155,12 +156,14 @@ public class FileManager {
     }
 
     public static Builder builder() {
-        return new Builder();
-    }
-
-    public FileManager init() {
-        instance = this;
-        return this;
+        return new Builder()
+                .gsonSettings(new GsonSettings(
+                        new GsonBuilder()
+                                .setPrettyPrinting()
+                ))
+                .autoCompleteConfig(false)
+                .path("")
+                .extension(".json");
     }
 
     public @NotNull File getDataFolder() {
@@ -170,12 +173,6 @@ public class FileManager {
         }
 
         return new File(System.getProperty("user.dir") + path);
-    }
-
-    public static class Builder extends _Builder {
-        public FileManager build() {
-            return super.build().init();
-        }
     }
 
 }
