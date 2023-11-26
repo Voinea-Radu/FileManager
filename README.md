@@ -1,7 +1,7 @@
 # FileManager
 
 ![Build](../../actions/workflows/build.yml/badge.svg)
-![Version](https://img.shields.io/badge/Version-3.2.2-red.svg)
+![Version](https://img.shields.io/badge/Version-3.2.3-red.svg)
 
 # Table Of Contents
 
@@ -41,12 +41,12 @@ com.github.L1ghtDream instead of dev.lightdream)
     <dependency>
         <groupId>dev.lightdream</groupId>
         <artifactId>file-manager</artifactId>
-        <version>3.2.2</version>
+        <version>3.2.3</version>
     </dependency>
     <dependency>
         <groupId>com.github.L1ghtDream</groupId>
         <artifactId>file-manager</artifactId>
-        <version>3.2.2</version>
+        <version>3.2.3</version>
     </dependency>
 </dependencies>
 ```
@@ -60,8 +60,8 @@ repositories {
 }
 
 dependencies {
-    implementation "dev.lightdream:file-manager:3.2.2"
-    implementation "com.github.L1ghtDream:file-manager:3.2.2"
+    implementation "dev.lightdream:file-manager:3.2.3"
+    implementation "com.github.L1ghtDream:file-manager:3.2.3"
 }
 ```
 
@@ -74,8 +74,8 @@ repositories {
 }
 
 dependencies {
-    implementation("dev.lightdream:file-manager:3.2.2")
-    implementation("com.github.L1ghtDream:file-manager:3.2.2")
+    implementation("dev.lightdream:file-manager:3.2.3")
+    implementation("com.github.L1ghtDream:file-manager:3.2.3")
 }
 ```
 
